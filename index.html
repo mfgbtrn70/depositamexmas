@@ -197,10 +197,10 @@ a.nowp:hover{border-bottom-color:var(--gold)}
 #revText{font:500 15px var(--f-ui);min-height:90px;border:1px solid #ccc;border-radius:8px;padding:8px;resize:vertical}
 #revEdit .row2{display:flex;gap:8px;justify-content:flex-end}
 #sndBtn{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:45;font:16px var(--f-ui);background:#e9b949;color:#1b0e16;border:0;border-radius:999px;padding:10px 20px;box-shadow:0 4px 14px #0008;cursor:pointer}
-#ytBox{position:fixed;right:calc(10px + env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;width:200px;background:#000;border-radius:10px;overflow:hidden;box-shadow:0 4px 18px #000a}
+#ytBox{pointer-events:none;border-radius:6px!important;box-shadow:0 2px 8px #0006!important;position:fixed;right:calc(10px + env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;width:200px;background:#000;border-radius:10px;overflow:hidden;box-shadow:0 4px 18px #000a}
 #ytBox.off,.ytv.off{position:fixed;left:-9999px;top:0;width:200px}
 .ytv{aspect-ratio:16/9;width:100%}.ytv iframe{width:100%;height:100%;display:block;border:0}
-.ytl{font:12px var(--f-ui);color:#fff;background:#1b0e16;padding:4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ytl{display:none!important;font:12px var(--f-ui);color:#fff;background:#1b0e16;padding:4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (prefers-reduced-motion: reduce){.btn{transition:none}}
 </style>
 </head>
@@ -483,8 +483,8 @@ const YTV={res:{id:'GoBUELnC-SI',off:0},pat:{id:'PxZR8xjcwEk',off:0}}; // off = 
 const YTS={ready:0,failed:0,on:false,cur:null,p:{}};
 if(window.top===window&&/^https?:$/.test(location.protocol)&&!/claude|anthropic|localhost/i.test(location.hostname)){
   window.onYouTubeIframeAPIReady=()=>{try{YTS.pl=new YT.Player('yt_res',{width:'200',height:'113',videoId:YTV.res.id,
-    playerVars:{playsinline:1,rel:0,modestbranding:1},events:{onReady:()=>{YTS.ready=1},onError:()=>{YTS.failed=1},
-      onStateChange:e=>{if(e.data===0&&YTS.on&&!endDone){YTS.curId=null;ytPlay(YTS.cur||'res',YTS.cur==='pat'?AUDIO.depStart:AUDIO.resStart)}}}});YTS.p.res=YTS.pl}catch(_){YTS.failed=1}};
+    playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,cc_load_policy:0,iv_load_policy:3,disablekb:1,fs:0},events:{onReady:()=>{YTS.ready=1},onError:()=>{YTS.failed=1},
+      onStateChange:e=>{if(e.data===1){try{YTS.pl.unloadModule('captions');YTS.pl.unloadModule('cc')}catch(_){}}if(e.data===0&&YTS.on&&!endDone){YTS.curId=null;ytPlay(YTS.cur||'res',YTS.cur==='pat'?AUDIO.depStart:AUDIO.resStart)}}}});YTS.p.res=YTS.pl}catch(_){YTS.failed=1}};
   const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>{YTS.failed=1};document.head.appendChild(sc);
 }
 function ytPlay(k,at){
