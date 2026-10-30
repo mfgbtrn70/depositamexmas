@@ -165,7 +165,10 @@ body.coarse .chars{flex-basis:calc(var(--u)*330)!important;height:calc(var(--u)*
 body.coarse .chars img:first-child{height:calc(var(--u)*255)!important;left:calc(var(--u)*-40)!important}
 body.coarse .chars img:last-child{height:calc(var(--u)*330)!important}
 body.coarse #lvImg{height:calc(var(--u)*330)!important}
-body.coarse .cardbtn img{height:calc(var(--u)*440)!important}
+body.coarse .cardbtn img{height:calc(100vh - 20px)!important}
+body.coarse #endOv .panel{padding:10px calc(var(--u)*40 + env(safe-area-inset-right,0px)) 10px calc(var(--u)*30 + env(safe-area-inset-left,0px))!important}
+body.coarse #endOv .row{gap:calc(var(--u)*30)!important}
+body.coarse #endOv .endcol{--u:calc((100vw - (100vh - 20px)*.5625 - 110px) / 820)}
 body.coarse #titleOv .head{display:none!important}
 body.coarse #titleOv .tlogo{display:block!important}
 body.coarse #endOv .corner-logo{display:none!important}
