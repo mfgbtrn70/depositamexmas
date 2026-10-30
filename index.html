@@ -232,6 +232,15 @@ body.coarse .stats{font-size:calc(var(--u)*23)!important}
 body.coarse .endbtns .btn{font-size:calc(var(--u)*27)!important}
 body.coarse .follow span{font-size:calc(var(--u)*26)!important}
 body.coarse .follow img{width:calc(var(--u)*50)!important;height:calc(var(--u)*50)!important}
+
+body.coarse .corner-logo{top:calc(16px + env(safe-area-inset-top,0px))!important;left:calc(22px + env(safe-area-inset-left,0px))!important;height:calc(var(--u)*40)!important}
+body.coarse .corner-iso{top:calc(14px + env(safe-area-inset-top,0px))!important;right:calc(76px + env(safe-area-inset-right,0px))!important;height:calc(var(--u)*40)!important}
+body.coarse.hasfs .corner-iso{right:calc(124px + env(safe-area-inset-right,0px))!important}
+body.coarse #mute{top:calc(10px + env(safe-area-inset-top,0px))!important;right:calc(12px + env(safe-area-inset-right,0px))!important}
+body.coarse #fs{top:calc(10px + env(safe-area-inset-top,0px))!important;right:calc(62px + env(safe-area-inset-right,0px))!important}
+body.coarse .panel{padding-top:calc(var(--u)*62 + env(safe-area-inset-top,0px))!important;padding-bottom:calc(var(--u)*26)!important;padding-left:calc(14px + env(safe-area-inset-left,0px))!important;padding-right:calc(14px + env(safe-area-inset-right,0px))!important}
+body.coarse.ov-lv #ytBox:not(.off){right:auto!important;left:calc(10px + env(safe-area-inset-left,0px))!important}
+body.coarse.ov-end #ytBox:not(.off){opacity:0!important}
 </style>
 </head>
 <body>
@@ -518,7 +527,7 @@ const YTV={res:{id:'GoBUELnC-SI',off:0},pat:{id:'PxZR8xjcwEk',off:0}}; // off = 
 const YTS={ready:0,failed:0,on:false,cur:null,p:{}};
 if(window.top===window&&/^https?:$/.test(location.protocol)&&!/claude|anthropic|localhost/i.test(location.hostname)){
   window.onYouTubeIframeAPIReady=()=>{try{YTS.pl=new YT.Player('yt_res',{width:'200',height:'113',videoId:YTV.res.id,
-    playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,cc_load_policy:0,iv_load_policy:3,disablekb:1,fs:0},events:{onReady:()=>{YTS.ready=1;if(YTS.wait&&!YTS.on&&!YTS.failed&&!endDone&&S&&!muted){YTS.on=true;let t=null;try{const a=S.chase?tracks.pat.a:tracks.res.a;t=a.currentTime;for(const k in tracks)tracks[k].a.pause()}catch(_){}ytPlay(S.chase?'pat':'res',t)}},onError:()=>{YTS.failed=1},
+    playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,cc_load_policy:0,iv_load_policy:3,disablekb:1,fs:0},events:{onReady:()=>{YTS.ready=1},onError:()=>{YTS.failed=1},
       onStateChange:e=>{if(e.data===1){try{YTS.pl.unloadModule('captions');YTS.pl.unloadModule('cc')}catch(_){}}if(e.data===0&&YTS.on&&!endDone){YTS.curId=null;ytPlay(YTS.cur||'res',YTS.cur==='pat'?AUDIO.depStart:AUDIO.resStart)}}}});YTS.p.res=YTS.pl}catch(_){YTS.failed=1}};
   const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>{YTS.failed=1};document.head.appendChild(sc);
 }
@@ -540,6 +549,12 @@ function initMp3(){
     a.addEventListener('error',()=>{sndErr='archivo '+(a.error&&a.error.code)});tracks[k]={a,g:null};
   });
 }
+function musicTouch(){try{
+  if(!S||endDone||muted)return;const lv=!$('lvlOv').hidden;if(!running&&!lv)return;
+  if(YTS.ready&&!YTS.failed&&!YTS.on&&(YTS.tries||0)<2){YTS.tries=(YTS.tries||0)+1;YTS.on=true;let t=null;try{const a=S.chase?tracks.pat.a:tracks.res.a;t=a.currentTime;for(const k in tracks)tracks[k].a.pause()}catch(_){}ytPlay(S.chase?'pat':'res',t);return}
+  if(YTS.on){try{if(YTS.pl.getPlayerState()!==1)YTS.pl.playVideo()}catch(_){}return}
+  const a=musicWanted();if(a&&a.paused)a.play().then(()=>{sndErr=''}).catch(e=>{sndErr=e&&e.name||'error'})}catch(_){}}
+['pointerup','touchend','click'].forEach(ev=>document.addEventListener(ev,musicTouch,{capture:true,passive:true}));
 function ytFallback(){ // YouTube did not really play: go back to the mp3 files
   if(!YTS.on)return;YTS.on=false;try{for(const k in YTS.p)YTS.p[k].pauseVideo()}catch(_){}$('ytBox').classList.add('off');
   initMp3();const a=S&&S.chase?tracks.pat.a:tracks.res.a;if(S&&S.chase){try{a.currentTime=AUDIO.depStart}catch(_){}}a.volume=VOL;a.muted=muted;a.play().catch(e=>{sndErr=e&&e.name||'error'});
@@ -570,7 +585,7 @@ let sndErr='';
 let endDone=false;
 function musicWanted(){if(YTS.on||!tracks.res||muted||endDone)return null;return running||(S&&S.over)||!$('lvlOv').hidden?(S&&S.chase?tracks.pat.a:tracks.res.a):null}
 setInterval(()=>{const a=musicWanted();if(!a){$('sndBtn').hidden=true;return}
-  if(a.paused){a.play().then(()=>{sndErr=''}).catch(e=>{sndErr=e&&e.name||'error'})}$('sndBtn').hidden=!(a.paused&&sndErr==='NotAllowedError')},1500);
+  if(a.paused){a.play().then(()=>{sndErr=''}).catch(e=>{sndErr=e&&e.name||'error'})}$('sndBtn').hidden=true},1500);
 $('sndBtn').addEventListener('click',()=>{try{if(actx&&actx.state==='suspended')actx.resume()}catch(_){}const a=musicWanted()||(tracks.res&&tracks.res.a);
   if(a){a.muted=false;a.volume=VOL;a.play().then(()=>{$('sndBtn').hidden=true}).catch(e=>{sndErr=e&&e.name||'error';$('sndBtn').textContent='La música no se puede reproducir aquí ('+sndErr+')'})}});
 function squeal(rank){ // little synthesized "uiii!" of satisfaction, higher for pricier shops
@@ -1477,6 +1492,7 @@ init3D();if(location.hostname==='localhost')window.__S=()=>S;
 let running=false,last=0;
 let wasIn=null;
 function loop(now){
+  document.body.classList.toggle('ov-lv',!$('lvlOv').hidden);document.body.classList.toggle('ov-end',!$('endOv').hidden);
   const inG=!!(S&&running);if(inG!==wasIn){wasIn=inG;document.body.classList.toggle('ingame',inG)}
   requestAnimationFrame(loop);
   const dt=Math.max(0,Math.min(.05,(now-last)/1000||0));last=now;
