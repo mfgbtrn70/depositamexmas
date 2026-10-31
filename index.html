@@ -233,8 +233,8 @@ body.coarse .endbtns .btn{font-size:calc(var(--u)*27)!important}
 body.coarse .follow span{font-size:calc(var(--u)*26)!important}
 body.coarse .follow img{width:calc(var(--u)*50)!important;height:calc(var(--u)*50)!important}
 
-body.coarse .corner-logo{top:calc(16px + env(safe-area-inset-top,0px))!important;left:calc(22px + env(safe-area-inset-left,0px))!important;height:calc(var(--u)*40)!important}
-body.coarse .corner-iso{top:calc(14px + env(safe-area-inset-top,0px))!important;right:calc(76px + env(safe-area-inset-right,0px))!important;height:calc(var(--u)*40)!important}
+body.coarse .corner-logo{top:calc(16px + env(safe-area-inset-top,0px))!important;left:calc(22px + env(safe-area-inset-left,0px))!important;height:calc(var(--u)*28)!important}
+body.coarse .corner-iso{top:calc(14px + env(safe-area-inset-top,0px))!important;right:calc(76px + env(safe-area-inset-right,0px))!important;height:calc(var(--u)*30)!important}
 body.coarse.hasfs .corner-iso{right:calc(124px + env(safe-area-inset-right,0px))!important}
 body.coarse #mute{top:calc(10px + env(safe-area-inset-top,0px))!important;right:calc(12px + env(safe-area-inset-right,0px))!important}
 body.coarse #fs{top:calc(10px + env(safe-area-inset-top,0px))!important;right:calc(62px + env(safe-area-inset-right,0px))!important}
@@ -243,14 +243,14 @@ body.coarse.ov-lv #ytBox:not(.off){right:auto!important;left:calc(10px + env(saf
 body.coarse.ov-end #ytBox:not(.off){opacity:0!important}
 
 .tcopy.simple{gap:calc(var(--u)*14)!important}
-.what{margin:0;font:calc(var(--u)*24) var(--f-ui);color:#f2c75c}
+.what{margin:0;font:calc(var(--u)*30) var(--f-ui);color:#f2c75c}
 .steps{display:flex;flex-direction:column;gap:calc(var(--u)*12)}
 .step{display:flex;align-items:center;gap:calc(var(--u)*16);font:calc(var(--u)*30)/1.2 var(--f-ui);color:var(--cream)}
 .step .ic{font-size:calc(var(--u)*40);width:calc(var(--u)*54);text-align:center;flex:0 0 auto}
 .step b{color:#f2c75c;font-weight:400}
 .goal{margin:calc(var(--u)*6) 0 0;font:calc(var(--u)*34) var(--f-ui);color:#f2c75c}
 #lvCopy{font-size:calc(var(--u)*24)!important}
-body.coarse .what{font-size:calc(var(--u)*26)!important}
+body.coarse .what{font-size:calc(var(--u)*34)!important}
 body.coarse .step{font-size:calc(var(--u)*34)!important}
 body.coarse .step .ic{font-size:calc(var(--u)*44)!important}
 body.coarse #titleOv .tcopy .keys{display:none!important}
@@ -282,7 +282,7 @@ body.coarse .goal{font-size:calc(var(--u)*38)!important}
           <div class="col">
             <h1 class="logo" style="font-size:calc(var(--u)*100)">¡Deposítame! <span class="xmas">XMAS</span></h1>
             <div class="tcopy simple">
-              <p class="what">🎮 El juego de las canciones de Gindro</p>
+              <p class="what">🎮 Resiliencia quiere ir de shopping con la Platinum del Don</p>
               <div class="steps">
                 <div class="step"><span class="ic">🛍️</span><span>Compra <b>todos los regalos</b></span></div>
                 <div class="step"><span class="ic">💸</span><span>¿Sin plata? <b>Atrapa al Patrocinador</b></span></div>
@@ -553,7 +553,7 @@ if(window.top===window&&/^https?:$/.test(location.protocol)&&!/claude|anthropic|
   const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>{YTS.failed=1};document.head.appendChild(sc);
 }
 function ytPlay(k,at){
-  clearTimeout(YTS.chk);YTS.chk=setTimeout(()=>{try{if(YTS.on&&YTS.pl.getPlayerState()!==1)ytFallback()}catch(_){ytFallback()}},6000);
+  clearTimeout(YTS.chk);const chk=n=>{YTS.chk=setTimeout(()=>{try{if(!YTS.on)return;const st=YTS.pl.getPlayerState();if(st===1)return;if(n<3){if(st!==3)YTS.pl.playVideo();chk(n+1);return}ytFallback()}catch(_){ytFallback()}},5000)};chk(0);
   const p=YTS.pl;if(!p)return;YTS.pos=YTS.pos||{};
   try{if(YTS.cur&&YTS.curId)YTS.pos[YTS.cur]=p.getCurrentTime()}catch(_){}
   const st=Math.max(0,(at!=null?at:(YTS.pos[k]!=null?YTS.pos[k]:(k==='res'?AUDIO.resStart:0)))+YTV[k].off);
@@ -572,7 +572,7 @@ function initMp3(){
 }
 function musicTouch(){try{
   if(!S||endDone||muted)return;const lv=!$('lvlOv').hidden;if(!running&&!lv)return;
-  if(YTS.ready&&!YTS.failed&&!YTS.on&&(YTS.tries||0)<2){YTS.tries=(YTS.tries||0)+1;YTS.on=true;let t=null;try{const a=S.chase?tracks.pat.a:tracks.res.a;t=a.currentTime;for(const k in tracks)tracks[k].a.pause()}catch(_){}ytPlay(S.chase?'pat':'res',t);return}
+  if(YTS.ready&&!YTS.failed&&!YTS.on&&(YTS.tries||0)<6){YTS.tries=(YTS.tries||0)+1;YTS.on=true;let t=null;try{const a=S.chase?tracks.pat.a:tracks.res.a;t=a.currentTime;for(const k in tracks)tracks[k].a.pause()}catch(_){}ytPlay(S.chase?'pat':'res',t);return}
   if(YTS.on){try{if(YTS.pl.getPlayerState()!==1)YTS.pl.playVideo()}catch(_){}return}
   const a=musicWanted();if(a&&a.paused)a.play().then(()=>{sndErr=''}).catch(e=>{sndErr=e&&e.name||'error'})}catch(_){}}
 ['pointerup','touchend','click'].forEach(ev=>document.addEventListener(ev,musicTouch,{capture:true,passive:true}));
