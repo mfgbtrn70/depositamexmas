@@ -300,6 +300,14 @@ body.coarse #lvlOv .links{margin-top:calc(var(--u)*12)!important}
 body.coarse #lvBtn{font-size:calc(var(--u)*36)!important}
 body.coarse #lvImg{height:calc(var(--u)*330)!important;width:auto!important}
 body.coarse #lvlOv .panel{padding-top:calc(var(--u)*48)!important}
+
+#ytGate{display:none}
+html body.ytgate.ytgate #ytBox:not(.off){pointer-events:auto!important;opacity:1!important;left:auto!important;right:calc(5vw + env(safe-area-inset-right,0px))!important;top:50%!important;bottom:auto!important;
+  transform:translateY(-42%);width:min(44vw,460px)!important;z-index:46;border:3px solid #f2c75c;border-radius:12px!important;box-shadow:0 10px 40px #000c!important}
+body.ytgate #ytGate{display:flex;flex-direction:column;align-items:center;gap:6px;position:fixed;z-index:46;right:calc(5vw + env(safe-area-inset-right,0px));width:min(44vw,460px);top:calc(50% - min(44vw,460px)*.5625*.42 - 70px)}
+body.ytgate #ytGate p{margin:0;font:clamp(18px,3.4vw,30px) var(--f-ui);color:#f2c75c;text-shadow:0 2px 8px #000}
+body.ytgate #ytSkip{position:fixed;right:calc(5vw + env(safe-area-inset-right,0px));width:min(44vw,460px);top:calc(50% + min(44vw,460px)*.5625*.58 + 14px);background:none;border:0;color:#fff9;font:16px var(--f-ui);text-decoration:underline;cursor:pointer}
+body.ytgate #lvImg,body.ytgate #lvBtn{display:none!important}
 </style>
 </head>
 <body>
@@ -441,6 +449,7 @@ body.coarse #lvlOv .panel{padding-top:calc(var(--u)*48)!important}
 </div>
 <button id="sndBtn" type="button" hidden>Toca aquí para activar la música</button>
 <div id="ytBox" class="off"><div class="ytl">♪ <span id="ytNow">Gindro</span></div><div id="yt_res_w" class="ytv"><div id="yt_res"></div></div><div id="yt_pat_w" class="ytv off"><div id="yt_pat"></div></div></div>
+<div id="ytGate"><p>▶ Toca el video para jugar</p><button type="button" id="ytSkip">o juega sin video</button></div>
 <div id="rotate" hidden><strong>Juego en pausa</strong><span>Gira el teléfono en horizontal para seguir jugando</span>
   <div class="rbtns"><button type="button" class="btn" id="rHome">🏠 Inicio</button><button type="button" class="btn ghost" id="rMute">🔇 Música</button><button type="button" class="btn ghost" id="rExit">✕ Salir</button></div></div>
 
@@ -592,10 +601,10 @@ const AUDIO={resStart:0,depStart:184,endStart:170,endStop:178.5}; // seconds: 'D
 /* ---------- YouTube mode: music from the official videos (only when the game runs on its own website) ---------- */
 const YTV={res:{id:'GoBUELnC-SI',off:0},pat:{id:'PxZR8xjcwEk',off:0}}; // off = seconds the video is ahead of the audio file
 const YTS={ready:0,failed:0,on:false,cur:null,p:{}};
-if(false){
+if(window.top===window&&/^https?:$/.test(location.protocol)&&!/claude|anthropic|localhost/i.test(location.hostname)){
   window.onYouTubeIframeAPIReady=()=>{try{YTS.pl=new YT.Player('yt_res',{width:'200',height:'113',videoId:YTV.res.id,
     playerVars:{playsinline:1,rel:0,modestbranding:1,controls:0,cc_load_policy:0,iv_load_policy:3,disablekb:1,fs:0},events:{onReady:()=>{YTS.ready=1},onError:()=>{YTS.failed=1},
-      onStateChange:e=>{if(e.data===1){try{YTS.pl.unloadModule('captions');YTS.pl.unloadModule('cc')}catch(_){}}if(e.data===0&&YTS.on&&!endDone){YTS.curId=null;ytPlay(YTS.cur||'res',YTS.cur==='pat'?AUDIO.depStart:AUDIO.resStart)}}}});YTS.p.res=YTS.pl}catch(_){YTS.failed=1}};
+      onStateChange:e=>{if(e.data===1&&document.body.classList.contains('ytgate')){gateDone()}if(e.data===1){try{YTS.pl.unloadModule('captions');YTS.pl.unloadModule('cc')}catch(_){}}if(e.data===0&&YTS.on&&!endDone){YTS.curId=null;ytPlay(YTS.cur||'res',YTS.cur==='pat'?AUDIO.depStart:AUDIO.resStart)}}}});YTS.p.res=YTS.pl}catch(_){YTS.failed=1}};
   const sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';sc.onerror=()=>{YTS.failed=1};document.head.appendChild(sc);
 }
 function ytPlay(k,at){
@@ -618,10 +627,19 @@ function initMp3(){
 }
 function musicTouch(ev){try{const onBtn=!!(ev&&ev.target&&ev.target.closest&&ev.target.closest('button'));
   if(!S||endDone||muted)return;const lv=!$('lvlOv').hidden;if(!running&&!lv)return;
-  if(onBtn&&YTS.ready&&!YTS.failed&&!YTS.on&&(YTS.tries||0)<6){YTS.tries=(YTS.tries||0)+1;YTS.on=true;let t=null;try{const a=S.chase?tracks.pat.a:tracks.res.a;t=a.currentTime;for(const k in tracks)tracks[k].a.pause()}catch(_){}ytPlay(S.chase?'pat':'res',t);return}
+  if(onBtn&&YTS.okOnce&&YTS.ready&&!YTS.failed&&!YTS.on&&(YTS.tries||0)<6){YTS.tries=(YTS.tries||0)+1;YTS.on=true;let t=null;try{const a=S.chase?tracks.pat.a:tracks.res.a;t=a.currentTime;for(const k in tracks)tracks[k].a.pause()}catch(_){}ytPlay(S.chase?'pat':'res',t);return}
   if(YTS.on){try{if(YTS.pl.getPlayerState()!==1)YTS.pl.playVideo()}catch(_){}return}
   const a=musicWanted();if(a&&a.paused)a.play().then(()=>{sndErr=''}).catch(e=>{sndErr=e&&e.name||'error'})}catch(_){}}
 ['pointerup','touchend','click'].forEach(ev=>document.addEventListener(ev,musicTouch,{capture:true,passive:true}));
+function gateOpen(){try{if(!YTS.ready||YTS.failed||YTS.okOnce||!YTS.pl)return;
+  document.body.classList.add('ytgate');$('ytBox').classList.remove('off');$('yt_pat_w').classList.add('off');
+  YTS.pl.setVolume(Math.round(VOL*100));if(muted)YTS.pl.mute();else YTS.pl.unMute();
+  if(YTS.curId!==YTV.res.id){YTS.pl.cueVideoById({videoId:YTV.res.id,startSeconds:AUDIO.resStart});YTS.curId=YTV.res.id}}catch(_){}}
+function gateClose(){document.body.classList.remove('ytgate')}
+function gateDone(){gateClose();YTS.okOnce=true;YTS.on=true;YTS.cur='res';YTS.curId=YTV.res.id;
+  try{for(const k in tracks)tracks[k].a.pause()}catch(_){}
+  if(!$('lvlOv').hidden)$('lvBtn').click()}
+$('ytSkip').addEventListener('click',()=>{gateClose();$('ytBox').classList.add('off');$('lvBtn').click()});
 function ytFallback(){ // YouTube did not really play: go back to the mp3 files
   if(!YTS.on)return;YTS.on=false;try{for(const k in YTS.p)YTS.p[k].pauseVideo()}catch(_){}$('ytBox').classList.add('off');
   initMp3();const a=S&&S.chase?tracks.pat.a:tracks.res.a;if(S&&S.chase){try{a.currentTime=AUDIO.depStart}catch(_){}}a.volume=VOL;a.muted=muted;a.play().catch(e=>{sndErr=e&&e.name||'error'});
@@ -630,7 +648,7 @@ function initAudio(){
   if(actx)return;
   try{actx=new (window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=muted?0:1;master.connect(actx.destination)}catch(_){actx=null}
   if(actx&&actx.state==='suspended')actx.resume();
-  YTS.wait=true;if(YTS.ready&&!YTS.failed){YTS.on=true;return}
+  YTS.wait=true;if(YTS.ready&&!YTS.failed&&YTS.okOnce){YTS.on=true;return}
   initMp3();tracks.res.a.play().catch(e=>{sndErr=e&&e.name||'error'});
   if(actx&&actx.state==='suspended')actx.resume();
 }
@@ -1586,7 +1604,7 @@ function showLevel(bonus){
   $('lvCopy').textContent=brk(L.copy);
   $('lvBtn').textContent=i===0?'¡A comprar!':'¡Vamos al nivel '+(i+1)+'!';
   $('lvImg').src=ASSETS[L.img];$('lvImg').onload=refit;
-  $('lvlOv').hidden=false;setTimeout(()=>{$('lvBtn').focus();drawMarks()},50);
+  $('lvlOv').hidden=false;setTimeout(()=>{$('lvBtn').focus();drawMarks()},50);gateOpen();
 }
 function levelDone(){
   running=false;
