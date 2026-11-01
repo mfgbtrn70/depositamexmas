@@ -173,10 +173,10 @@ body.coarse .chars{flex-basis:calc(var(--u)*330)!important;height:calc(var(--u)*
 body.coarse .chars img:first-child{height:calc(var(--u)*255)!important;left:calc(var(--u)*-40)!important}
 body.coarse .chars img:last-child{height:calc(var(--u)*330)!important}
 body.coarse #lvImg{height:calc(var(--u)*330)!important}
-body.coarse .cardbtn img{height:calc(100vh - 20px)!important}
+body.coarse .cardbtn img{height:calc(100dvh - 20px)!important}
 body.coarse #endOv .panel{padding:10px calc(var(--u)*40 + env(safe-area-inset-right,0px)) 10px calc(var(--u)*30 + env(safe-area-inset-left,0px))!important}
 body.coarse #endOv .row{gap:calc(var(--u)*30)!important}
-body.coarse #endOv .endcol{--u:calc((100vw - (100vh - 20px)*.5625 - 110px) / 690)}
+body.coarse #endOv .endcol{--u:calc((100vw - (100dvh - 20px)*.5625 - 110px) / 690)}
 body.coarse #titleOv .head{display:none!important}
 body.coarse #titleOv .tlogo{display:block!important}
 body.coarse #endOv .corner-logo{display:none!important}
@@ -328,7 +328,7 @@ body.coarse .goal{margin:0!important}
 body.coarse #lvCopy{margin:0!important;line-height:1.35!important}
 body.coarse #lvlOv .lvlinks{margin:calc(var(--u)*6) 0 0!important}
 body.coarse .songcta{margin-top:calc(var(--u)*4)!important}
-body.coarse #lvImg{height:calc(100vh - 66px)!important;align-self:flex-end!important;margin-bottom:0!important}
+body.coarse #lvImg{height:calc(100dvh - 66px)!important;align-self:flex-end!important;margin-bottom:0!important}
 
 .cardcol{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*14);flex:0 0 auto}
 .cardcol #shareBtn{font-size:calc(var(--u)*20);padding:calc(var(--u)*10) calc(var(--u)*18);max-width:calc(var(--u)*320);line-height:1.15;white-space:normal}
@@ -337,9 +337,9 @@ body.coarse #lvImg{height:calc(100vh - 66px)!important;align-self:flex-end!impor
 .endbtns .lbtns .sbtn{flex:1 1 0;justify-content:center;font-size:calc(var(--u)*28)!important;padding:calc(var(--u)*12) calc(var(--u)*20)!important}
 .endbtns #againBtn{grid-column:1;grid-row:2}
 .endbtns #homeBtn{grid-column:2!important;grid-row:2!important}
-html body.coarse .cardbtn img{height:calc(100vh - 74px)!important}
+html body.coarse .cardbtn img{height:calc(100dvh - 74px)!important}
 html body.coarse #endOv .panel{padding-top:10px!important;padding-bottom:10px!important}
-html body.coarse #endOv .endcol{--u:calc((100vw - (100vh - 70px)*.5625 - 110px) / 800);min-width:0;flex:1 1 auto}
+html body.coarse #endOv .endcol{--u:calc((100vw - (100dvh - 70px)*.5625 - 110px) / 800);min-width:0;flex:1 1 auto}
 html body.coarse .cardcol #shareBtn{font-size:17px!important;padding:8px 14px!important;max-width:none;white-space:nowrap}
 html body.coarse .cardcol{gap:8px!important}
 html body.coarse #endOv .fit{transform:none!important}
@@ -347,15 +347,15 @@ html body.coarse #endOv .row{gap:calc(var(--u)*24)!important}
 
 #bigOv .panel{padding:10px calc(20px + env(safe-area-inset-right,0px)) 10px calc(20px + env(safe-area-inset-left,0px))!important}
 .bigrow{display:grid;grid-template-columns:40% 60%;align-items:center;justify-items:center;height:100%;width:100%}
-#bigCard{height:calc(100vh - 64px);width:auto;max-width:none;border-radius:12px;box-shadow:0 10px 40px #000c;transform:rotate(-4deg)}
-.bigtxt{display:flex;flex-direction:column;gap:6vh;width:100%;max-width:58vw;align-items:center;text-align:center;padding:0 2vw}
+#bigCard{height:calc(100dvh - 64px);width:auto;max-width:none;border-radius:12px;box-shadow:0 10px 40px #000c;transform:rotate(-4deg)}
+.bigtxt{display:flex;flex-direction:column;gap:6dvh;width:100%;max-width:58vw;align-items:center;text-align:center;padding:0 2vw}
 .bigtxt p{margin:0;font:clamp(16px,2.9vw,38px)/1.5 var(--f-ui);color:var(--cream)}
 .bigtxt b{color:#f2c75c;font-weight:400}
-.bigtxt .btn{font-size:clamp(18px,3vw,34px)!important;margin-top:1vh}
+.bigtxt .btn{font-size:clamp(18px,3vw,34px)!important;margin-top:1dvh}
 
 body:not(.hasS) #rotate .r-play,body:not(.hasS) #rotate .rbtns,body.hasS #rotate .r-idle{display:none!important}
 
-html body.coarse .cardbtn img{height:calc(100vh - 104px)!important}
+html body.coarse .cardbtn img{height:calc(100dvh - 104px)!important}
 .cardbtn{transform:rotate(-4deg)}
 .cardcol{gap:16px!important}
 .endbtns #againBtn{grid-row:1!important}
@@ -365,22 +365,24 @@ html body.coarse .cardbtn img{height:calc(100vh - 104px)!important}
 html body.coarse #endOv .endcol{padding-right:70px!important;padding-left:10px}
 html body.coarse #endTitle{font-size:calc(var(--u)*60)!important;text-wrap:balance}
 
-html body.coarse #lvlOv .panel{padding-top:calc(11vh + env(safe-area-inset-top,0px))!important}
-html body.coarse #lvlOv .endcol{gap:3vh!important}
-html body.coarse #lvTitle{font-size:16vh!important;line-height:1!important}
-html body.coarse .goal{font-size:8vh!important}
-html body.coarse #lvCopy{font-size:6.8vh!important;line-height:1.25!important}
-html body.coarse #lvBtn{font-size:8vh!important;padding:1.6vh 6vh!important}
-html body.coarse #lvlOv .lvlinks{margin:.6vh 0 0!important}
-html body.coarse .sbtn{font-size:6vh!important;padding:1.2vh 3.4vh!important}
-html body.coarse .sbtn img{width:7vh!important;height:7vh!important}
-html body.coarse a.nowp{font-size:5.4vh!important}
-html body.coarse #lvImg{height:calc(100vh - 13vh)!important}
+html body.coarse #lvlOv .panel{padding-top:calc(11dvh + env(safe-area-inset-top,0px))!important}
+html body.coarse #lvlOv .endcol{gap:2.6dvh!important}
+html body.coarse #lvTitle{font-size:14.5dvh!important;line-height:1!important}
+html body.coarse .goal{font-size:7.4dvh!important}
+html body.coarse #lvCopy{font-size:6.2dvh!important;line-height:1.25!important}
+html body.coarse #lvBtn{font-size:7.2dvh!important;padding:1.6dvh 6dvh!important}
+html body.coarse #lvlOv .lvlinks{margin:.6dvh 0 0!important}
+html body.coarse .sbtn{font-size:5.4dvh!important;padding:1.2dvh 3.4dvh!important}
+html body.coarse .sbtn img{width:6.4dvh!important;height:6.4dvh!important}
+html body.coarse #lvlOv .panel{padding-left:calc(6vw + env(safe-area-inset-left,0px))!important;padding-right:calc(4vw + env(safe-area-inset-right,0px))!important;padding-bottom:4dvh!important}
+html body.coarse #lvlOv .row{gap:3vw!important}
+html body.coarse a.nowp{font-size:5.4dvh!important}
+html body.coarse #lvImg{height:calc(100dvh - 15dvh)!important}
 
 html body.coarse #endOv .panel{padding-left:calc(5vw + env(safe-area-inset-left,0px))!important;padding-right:calc(5vw + env(safe-area-inset-right,0px))!important}
 html body.coarse #endOv .row{gap:5vw!important;justify-content:center}
 html body.coarse #endOv .endcol{padding-right:40px!important;padding-left:0}
-html body.coarse #endOv .endcol{--u:calc((90vw - (100vh - 70px)*.5625 - 5vw - 40px) / 760)}
+html body.coarse #endOv .endcol{--u:calc((90vw - (100dvh - 70px)*.5625 - 5vw - 40px) / 760)}
 </style>
 </head>
 <body>
