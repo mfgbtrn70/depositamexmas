@@ -383,6 +383,19 @@ html body.coarse #endOv .panel{padding-left:calc(5vw + env(safe-area-inset-left,
 html body.coarse #endOv .row{gap:5vw!important;justify-content:center}
 html body.coarse #endOv .endcol{padding-right:40px!important;padding-left:0}
 html body.coarse #endOv .endcol{--u:calc((90vw - (100dvh - 70px)*.5625 - 5vw - 40px) / 760)}
+
+#bigCard{-webkit-touch-callout:default!important;-webkit-user-select:auto!important;user-select:auto!important;touch-action:auto!important}
+.bigbtns{display:flex;gap:3vw;justify-content:center;flex-wrap:wrap}
+.bigbtns .btn{font-size:clamp(16px,2.6vw,32px)!important}
+html body.coarse #lvlOv .endcol{justify-content:center!important;gap:4dvh!important;padding-bottom:2dvh}
+html body.coarse #lvlOv .panel{padding-top:calc(16dvh + env(safe-area-inset-top,0px))!important;padding-bottom:6dvh!important}
+html body.coarse #lvlOv .lvlinks{margin:0!important}
+html body.coarse .songcta{margin:0!important}
+html body.coarse #lvImg{height:calc(100dvh - 24dvh)!important;margin-right:2vw}
+html body.coarse #lvlOv .panel{padding-right:calc(9vw + env(safe-area-inset-right,0px))!important}
+html body.coarse .endbtns .lbtns .sbtn{font-size:5.4dvh!important;padding:1.2dvh 3.4dvh!important;flex:0 0 auto}
+html body.coarse .endbtns .lbtns .sbtn img{width:6.4dvh!important;height:6.4dvh!important}
+html body.coarse .endbtns{row-gap:3.6dvh!important}
 </style>
 </head>
 <body>
@@ -484,7 +497,7 @@ html body.coarse #endOv .endcol{--u:calc((90vw - (100dvh - 70px)*.5625 - 5vw - 4
     <div class="panel">
       <div class="bigrow">
       <img id="bigCard" alt="Tarjeta con tu resultado">
-      <div class="bigtxt"><p>👆 Mantén presionada la imagen para <b>guardarla</b></p><p>📲 Compártela en tus historias con <b>@gindro_oficial</b></p>
+      <div class="bigtxt"><p>Compártela en tus historias con <b>@gindro_oficial</b></p><div class="bigbtns"><button class="btn" id="bigSave" type="button">⬇ Guardar</button><button class="btn" id="bigShare" type="button">📲 Compartir</button></div>
       <button class="btn ghost" id="bigClose" type="button">Cerrar</button></div>
       </div>
     </div>
@@ -1661,7 +1674,7 @@ function showLevel(bonus){
   const L=S.L,i=S.level;
   $('lvKicker').textContent=L.day;
   $('lvBonus').textContent=bonus!=null?'+$'+fol(bonus)+' por terminar antes · Total $'+fol(S.followers):'';
-  $('lvBonus').hidden=bonus==null;$('lvSong').hidden=bonus==null;document.querySelector('#lvlOv .nowp').hidden=bonus!=null;
+  $('lvBonus').hidden=bonus==null;$('lvSong').hidden=false;document.querySelector('#lvlOv .nowp').hidden=true;
   $('lvTitle').textContent=L.title;$('lvGoal').textContent='🎁 Compra '+L.shops.length+' regalos';
   $('lvCopy').textContent=brk(L.copy);
   $('lvBtn').textContent=i===0?'¡A comprar!':'¡Vamos al nivel '+(i+1)+'!';
@@ -1781,6 +1794,8 @@ $('againBtn').addEventListener('click',()=>{retryLv=!(lastResult&&lastResult.win
 $('homeBtn').addEventListener('click',()=>{running=false;clearTimeout(endTimer);try{for(const k in tracks)tracks[k].a.pause()}catch(_){}try{if(YTS.on&&YTS.pl)YTS.pl.pauseVideo()}catch(_){}
   S=null;$('endOv').hidden=true;$('bigOv').hidden=true;$('lvlOv').hidden=true;$('titleOv').hidden=false;build3DShops(previewShops);refit()});
 $('shareBtn').addEventListener('click',shareCard);
+$('bigSave').addEventListener('click',()=>{try{if(!cardBlob)return;const u=URL.createObjectURL(cardBlob),a=document.createElement('a');a.href=u;a.download='depositame_xmas.jpg';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}catch(_){}});
+$('bigShare').addEventListener('click',async()=>{const text='¡Deposítame! XMAS de @gindro_oficial. ¿Me superas?';try{if(cardBlob&&navigator.canShare){const f=new File([cardBlob],'depositame.jpg',{type:'image/jpeg'});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],text});return}}}catch(e){if(e&&e.name==='AbortError')return}$('bigSave').click()});
 $('cardBtn').addEventListener('click',()=>{$('bigOv').hidden=false});
 $('bigClose').addEventListener('click',()=>{$('bigOv').hidden=true});
 addEventListener('keydown',e=>{if(e.key!=='Enter'||running)return;if(!$('lvlOv').hidden)$('lvBtn').click();else if(!$('titleOv').hidden||!$('endOv').hidden)start()});
