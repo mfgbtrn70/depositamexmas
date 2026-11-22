@@ -617,7 +617,7 @@ const LEVELS=[
    {name:'Carter',sf:'44px "Great Vibes",cursive',up:0,item:'Pulsera de oro',price:6500,icon:'bangle',wall:'#9e1030',sign:'#5c0719',ink:'#f3d48b',line:'Pa mi cumple es, bebé'},
    {name:'Hermós',sf:'700 30px Cinzel,serif',ls:3,item:'Birikin',price:9500,icon:'birkin',wall:'#e8742a',sign:'#5b2a0e',ink:'#fff',line:'Antes muerta que sin la Birikin'}]},
  {day:'Nochebuena',title:'La Oficial',dur:150,start:5000,dep:[18000,10000,2000],ps:184,theme:'marina',img:'x_res_bikini',
-  copy:'Si aguanta hasta medianoche: Navidad en Nueva York.',
+  copy:'Si compra todo antes de medianoche: ¡Navidad en Nueva York!',
   shops:[
    {name:'Banco del Don',sf:'700 24px Cinzel,serif',ls:2,item:'Tarjeta Platinum',price:10000,icon:'card',wall:'#c9ccd1',sign:'#2a2a2a',ink:'#fff',line:'Voy de shopping con la Platinum del Don'},
    {name:'Clínica Regia',sf:'30px Italiana,serif',ls:2,item:'Un retoque',price:12000,icon:'lips',wall:'#f7c6d5',sign:'#b3123f',ink:'#fff',line:'Un retoque, ya no soy una pelaa'},
@@ -1811,7 +1811,11 @@ $('homeBtn').addEventListener('click',()=>{running=false;clearTimeout(endTimer);
   S=null;$('endOv').hidden=true;$('bigOv').hidden=true;$('lvlOv').hidden=true;$('titleOv').hidden=false;build3DShops(previewShops);refit()});
 $('shareBtn').addEventListener('click',shareCard);
 $('bigSave').addEventListener('click',()=>{try{if(!cardBlob)return;const u=URL.createObjectURL(cardBlob),a=document.createElement('a');a.href=u;a.download='depositame_xmas.jpg';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}catch(_){}});
-$('bigShare').addEventListener('click',async()=>{const text='¡Deposítame! XMAS de @gindro_oficial. ¿Me superas?';try{if(cardBlob&&navigator.canShare){const f=new File([cardBlob],'depositame.jpg',{type:'image/jpeg'});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],text});return}}}catch(e){if(e&&e.name==='AbortError')return}$('bigSave').click()});
+$('bigShare').addEventListener('click',async()=>{const text='¡Deposítame! XMAS de @gindro_oficial. ¿Me superas? ';const url=location.origin+location.pathname;
+  try{if(cardBlob&&navigator.canShare){const f=new File([cardBlob],'depositame.jpg',{type:'image/jpeg'});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],text});return}}}catch(e){if(e&&e.name==='AbortError')return}
+  try{if(navigator.share){await navigator.share({title:'¡Deposítame! XMAS',text,url});return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(text+url);$('bigShare').textContent='✓ Link copiado'}catch(_){}});
+if(!navigator.share&&!navigator.clipboard){$('bigShare').hidden=true}
 $('cardBtn').addEventListener('click',()=>{$('bigOv').hidden=false});
 $('bigClose').addEventListener('click',()=>{$('bigOv').hidden=true});
 addEventListener('keydown',e=>{if(e.key!=='Enter'||running)return;if(!$('lvlOv').hidden)$('lvBtn').click();else if(!$('titleOv').hidden||!$('endOv').hidden)start()});
