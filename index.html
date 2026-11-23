@@ -469,6 +469,10 @@ html body .ov .panel #homeBtn{background:#1f7a3a!important;border-radius:calc(va
 #lvlOv .row{justify-content:center!important;width:100%}
 #lvlOv #lvImg{position:absolute!important;right:calc(var(--u)*70 + env(safe-area-inset-right,0px));bottom:0}
 html body.coarse #lvlOv #lvImg{right:calc(4vw + env(safe-area-inset-right,0px));bottom:8px;max-height:calc(100dvh - 70px)}
+
+/* level screens: texts a bit left of the character */
+html body #lvlOv .row>.col{margin-right:calc(var(--u)*200)!important;max-width:calc(var(--u)*760)!important}
+html body.coarse #lvlOv .row>.col{margin-right:12vw!important;max-width:62vw!important}
 </style>
 </head>
 <body>
@@ -663,7 +667,7 @@ const LEVELS=[
    {name:'Guxi',sf:'700 34px "Playfair Display",serif',ls:4,item:'Guantes de cuero',price:2000,icon:'gloves',wall:'#2f6b4a',sign:'#b3122e',ink:'#fff',line:'Para verme regia en la nieve'},
    {name:'Preda',sf:'700 32px "Josefin Sans",sans-serif',ls:5,item:'Botas de invierno',price:2800,icon:'boots',wall:'#2a2a2a',sign:'#111',ink:'#fff',line:'Preda, Guxi, Saint Argent'}]},
  {day:'23 de diciembre',title:'Fitnessmom',dur:130,start:1000,dep:[4000,2500,400],ps:172,theme:'night',img:'x_res_santa',
-  copy:'Regalos para todas… con la Platinum del Don.',
+  copy:'Super regalos con la Platinum del Don.',
   shops:[
    {name:'SmartGym',sf:'900 30px Montserrat,sans-serif',up:0,item:'Entrenador personal',price:1500,icon:'dumbbell',wall:'#2a2a2a',sign:'#ffd400',ink:'#1b1b1b',line:'Ahora tengo entrenador en el gym'},
    {name:'Spa',sf:'34px Italiana,serif',ls:4,item:'Masajitos',price:2000,icon:'spa',wall:'#bfe3d6',sign:'#2f6b5a',ink:'#fff',line:'Camioneta y masajitos'},
