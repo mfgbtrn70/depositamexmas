@@ -473,6 +473,10 @@ html body.coarse #lvlOv #lvImg{right:calc(4vw + env(safe-area-inset-right,0px));
 /* level screens: texts a bit left of the character */
 html body #lvlOv .row>.col{margin-right:calc(var(--u)*200)!important;max-width:calc(var(--u)*760)!important}
 html body.coarse #lvlOv .row>.col{margin-right:12vw!important;max-width:62vw!important}
+
+/* phone title: texts away from the camera notch, chars closer to the right edge */
+html body.coarse #titleOv .row>.col{margin-left:max(7vw, env(safe-area-inset-left,0px))}
+html body.coarse #titleOv .chars{margin-right:0!important}
 </style>
 </head>
 <body>
