@@ -464,6 +464,11 @@ body.coarse #titleOv .chars{min-width:calc(var(--u)*470)!important}
 body:not(.coarse) .corner-iso{right:max(calc(var(--u)*138), calc(124px + env(safe-area-inset-right,0px)))!important}
 /* home button: green rounded rectangle */
 html body .ov .panel #homeBtn{background:#1f7a3a!important;border-radius:calc(var(--u)*16)!important;width:calc(var(--u)*88)!important;box-shadow:none!important;border:0!important}
+
+/* level screens: texts centered on screen, character on the right */
+#lvlOv .row{justify-content:center!important;width:100%}
+#lvlOv #lvImg{position:absolute!important;right:calc(var(--u)*70 + env(safe-area-inset-right,0px));bottom:0}
+html body.coarse #lvlOv #lvImg{right:calc(4vw + env(safe-area-inset-right,0px));bottom:8px;max-height:calc(100dvh - 70px)}
 </style>
 </head>
 <body>
